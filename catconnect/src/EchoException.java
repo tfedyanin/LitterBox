@@ -7,4 +7,10 @@ public class EchoException extends Exception {
                 "Transmit: " + command.substring(0, result.length()) + "<" + command.substring(result.length()) + ">\n" +
                 "Receive: " + result);
     }
+
+    public EchoException(char fact, char wait) {
+        super("Can't send char.\n" +
+                "Transmit: " + wait +
+                "\nReceive: " + fact);
+    }
 }
