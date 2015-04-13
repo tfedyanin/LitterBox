@@ -388,14 +388,14 @@ public class LitterClient extends Application {
                     client.send(Request.ARM_UP);
                     Thread.sleep(932);
                     client.send(Request.ARM_STOP);
-
+                    TimeUnit.SECONDS.sleep(1);
 
                     client.send(Request.BOWL_OUT);
                     TimeUnit.SECONDS.sleep(1);
                     client.send(Request.TAP_ON);
                     TimeUnit.SECONDS.sleep(1);
                     client.send(Request.DOSAGE_ON);
-                    Thread.sleep(5_000);
+                    Thread.sleep(7_000);
                     client.send(Request.DOSAGE_OFF);
                     Thread.sleep(150_000);
                     client.send(Request.TAP_OFF);
