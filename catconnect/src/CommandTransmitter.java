@@ -1,5 +1,10 @@
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.net.InetAddress;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicIntegerArray;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
@@ -12,17 +17,32 @@ public class CommandTransmitter implements ReceiverListener {
     private final DataOutputStream out;
     private volatile boolean waitChar = false;
     private volatile boolean waitString = false;
-    private volatile char aChar;
+    private volatile AtomicInteger aChar = new AtomicInteger();
     private final Lock lock = new ReentrantLock();
-
+    private AtomicBoolean preReadyToTransmit = null;
+    private AtomicBoolean readyToTransmit = null;
 
     public CommandTransmitter(DataOutputStream out) {
         this.out = out;
     }
 
+    private void ready() throws IOException, InterruptedException {
+        if (readyToTransmit == null) {
+            preReadyToTransmit = new AtomicBoolean(false);
+            readyToTransmit = new AtomicBoolean(false);
+//            transmit('\r');
+        }
+        if (!readyToTransmit.get()) {
+            transmit('\r');
+        }
+        while (!readyToTransmit.get()) {
+            this.wait();
+        }
+    }
+
     synchronized void send(String command) {
         try {
-            init();
+            ready();
             for (char c : command.toCharArray()) {
                 transmitEcho(c);
             }
@@ -35,8 +55,6 @@ public class CommandTransmitter implements ReceiverListener {
         } catch (IOException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (EchoException e) {
             e.printStackTrace();
         }
     }
@@ -56,9 +74,10 @@ public class CommandTransmitter implements ReceiverListener {
 
 
     private void transmit(char ch) throws IOException, InterruptedException {
+        preReadyToTransmit.set(false);
+        readyToTransmit.set(false);
         out.writeByte(ch);
         out.flush();
-//        Thread.sleep(50);
     }
 
     private void transmitEnd() throws IOException, InterruptedException {
@@ -73,25 +92,27 @@ public class CommandTransmitter implements ReceiverListener {
         try {
             transmit(ch);
             char echoChar = echo();
-            if (echoChar != echoExpect) {
-                throw new EchoException(echoExpect, echoChar);
-            }
+//            if (echoChar != echoExpect) {
+//                throw new EchoException(echoExpect, echoChar);
+//            }
 
         } catch (IOException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {
             e.printStackTrace();
-        } catch (EchoException e) {
-            e.printStackTrace();
+            //todo механизм с отдачей, иногда допустить попытку подождать следующий символ
+            //todo разобраться с таймаутами, чтобы исключить бесконечное ожидание
+//        } catch (EchoException e) {
+//            e.printStackTrace();
         }
     }
 
     private char echo() throws InterruptedException {
         waitChar = true;
-        char res = aChar;
+        char res = (char) aChar.get();
         while (waitChar) {
             this.wait();
-            res = aChar;
+            res = (char) aChar.get();
         }
         return res;
     }
@@ -101,7 +122,19 @@ public class CommandTransmitter implements ReceiverListener {
     public void recieve(char ch) {
         synchronized (this) {
             waitChar = false;
-            aChar = ch;
+            aChar.set(ch);
+
+            if (!preReadyToTransmit.get() && !readyToTransmit.get() && ch == '#') {
+                preReadyToTransmit.set(true);
+                this.notifyAll();
+                return;
+            }
+            if (preReadyToTransmit.get() && !readyToTransmit.get() && ch == ' ') {
+                preReadyToTransmit.set(false);
+                readyToTransmit.set(true);
+                this.notifyAll();
+                return;
+            }
             this.notifyAll();
         }
     }

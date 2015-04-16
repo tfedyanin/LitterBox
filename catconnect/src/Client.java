@@ -24,12 +24,13 @@ public class Client {
         receiver.addListener(new ReceiverListener() {
             @Override
             public void recieve(char ch) {
-
+                System.out.print(ch);
             }
 
             @Override
             public void receive(String string) {
-                System.out.println(string);
+
+//                System.out.println(string);
             }
         });
         Thread thread = new Thread(receiver);

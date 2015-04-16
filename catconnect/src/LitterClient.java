@@ -344,7 +344,6 @@ public class LitterClient extends Application {
             public void handle(ActionEvent event) {
                 try {
                     client.send(Request.BOWL_IN);
-                    TimeUnit.SECONDS.sleep(1);
                     client.send(Request.ARM_DOWN);
                     Thread.sleep(13217);
                     client.send(Request.ARM_STOP);
@@ -352,7 +351,6 @@ public class LitterClient extends Application {
                     client.send(Request.BOWL_OUT);
                     Thread.sleep(6201);
                     client.send(Request.BOWL_IN);
-                    TimeUnit.SECONDS.sleep(1);
                     client.send(Request.ARM_DOWN);
                     Thread.sleep(1000);
                     client.send(Request.ARM_UP);
@@ -364,9 +362,9 @@ public class LitterClient extends Application {
                     client.send(Request.ARM_DOWN);
                     Thread.sleep(6002);
                     client.send(Request.ARM_UP);
-                    Thread.sleep(11204);
+                    Thread.sleep(15204);
                     client.send(Request.ARM_DOWN);
-                    Thread.sleep(12703);
+                    Thread.sleep(15703);
                     client.send(Request.ARM_STOP);
                     Thread.sleep(4701);
                     client.send(Request.ARM_DOWN);
@@ -380,26 +378,20 @@ public class LitterClient extends Application {
                     client.send(Request.ARM_DOWN);
                     Thread.sleep(6601);
                     client.send(Request.ARM_UP);
-                    Thread.sleep(10141);
+                    Thread.sleep(15141);
                     client.send(Request.BOWL_OUT);
-                    TimeUnit.SECONDS.sleep(1);
                     client.send(Request.ARM_DOWN);
                     Thread.sleep(15769);
                     client.send(Request.ARM_UP);
                     Thread.sleep(932);
                     client.send(Request.ARM_STOP);
-                    TimeUnit.SECONDS.sleep(1);
-
                     client.send(Request.BOWL_OUT);
-                    TimeUnit.SECONDS.sleep(1);
                     client.send(Request.TAP_ON);
-                    TimeUnit.SECONDS.sleep(1);
                     client.send(Request.DOSAGE_ON);
                     Thread.sleep(7_000);
                     client.send(Request.DOSAGE_OFF);
                     Thread.sleep(150_000);
                     client.send(Request.TAP_OFF);
-                    TimeUnit.SECONDS.sleep(1);
                     client.send(Request.DRAIN_ON);
                     Thread.sleep(100_000);
                     client.send(Request.TAP_ON);
@@ -407,13 +399,10 @@ public class LitterClient extends Application {
                     client.send(Request.DRAIN_OFF);
                     Thread.sleep(100_000);
                     client.send(Request.TAP_OFF);
-                    TimeUnit.SECONDS.sleep(1);
                     client.send(Request.DRAIN_ON);
-                    TimeUnit.SECONDS.sleep(1);
                     client.send(Request.DRYER_ON);
                     Thread.sleep(200_000);
                     client.send(Request.DRAIN_OFF);
-                    TimeUnit.SECONDS.sleep(1);
                     client.send(Request.ARM_DOWN);
                     Thread.sleep(2_000);
                     client.send(Request.ARM_STOP);
@@ -423,9 +412,7 @@ public class LitterClient extends Application {
                     client.send(Request.ARM_UP);
                     TimeUnit.SECONDS.sleep(12);
                     client.send(Request.ARM_STOP);
-                    TimeUnit.SECONDS.sleep(1);
                     client.send(Request.BOWL_STOP);
-                    TimeUnit.SECONDS.sleep(1);
                     client.send(Request.DRYER_OFF);
                 } catch (EchoException e) {
                     e.printStackTrace();
