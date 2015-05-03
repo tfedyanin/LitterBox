@@ -12,8 +12,9 @@ public class SpeedTest {
             client = new Client(InetAddress.getByAddress(
                     new byte[]{(byte) 192, (byte) 168, 1, (byte) 177}),
                     80);
-            for (int i = 0; i < 5; i++) {
+            for (int i = 0; i < 50; i++) {
                 client.send(Request.BOWL_STATUS);
+                client.send(Request.CAT);
 
             }
         } catch (IOException | EchoException e) {

@@ -1,13 +1,7 @@
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.net.InetAddress;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.concurrent.atomic.AtomicIntegerArray;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
-import java.util.concurrent.locks.ReentrantReadWriteLock;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * User: Тимофей
@@ -15,67 +9,42 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
  */
 public class CommandTransmitter implements ReceiverListener {
     private final DataOutputStream out;
-    private volatile boolean waitChar = false;
-    private volatile boolean waitString = false;
-    private volatile AtomicInteger aChar = new AtomicInteger();
-    private final Lock lock = new ReentrantLock();
-    private AtomicBoolean preReadyToTransmit = null;
-    private AtomicBoolean readyToTransmit = null;
+    private String lastLine;
+    private List<Character> currentLine = new ArrayList<Character>(64){
+        @Override
+        public String toString() {
+            StringBuilder stringBuilder = new StringBuilder(this.size());
+            this.forEach(stringBuilder::append);
+            return stringBuilder.toString();
+        }
+    };
 
     public CommandTransmitter(DataOutputStream out) {
         this.out = out;
     }
 
-    private void ready() throws IOException, InterruptedException {
-        if (readyToTransmit == null) {
-            preReadyToTransmit = new AtomicBoolean(false);
-            readyToTransmit = new AtomicBoolean(false);
-//            transmit('\r');
+    private void getReady() throws InterruptedException, IOException {
+        if (currentLine.toString().equals("# ")) {
+            return;
         }
-        if (!readyToTransmit.get()) {
-            transmit('\r');
-        }
-        while (!readyToTransmit.get()) {
+        transmit('\r');
+        while (currentLine.toString().equals("# ")) {
+            //todo возможен вечное ожидание, нужно побороть переобределив ожидание с таймаутом
             this.wait();
         }
     }
 
-    synchronized void send(String command) {
-        try {
-            ready();
-            for (char c : command.toCharArray()) {
-                transmitEcho(c);
-            }
-            transmitEnd();
-            waitString = true;
-            while (waitString) {
-                this.wait();
-            }
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+    synchronized void send(String command) throws IOException, InterruptedException {
+        //todo При черезмерном ожидании или ошибке выполнения команды требуется повторить попытку. Количество повторов
+        // должно быть определно, после критическая ошибка
+        getReady();
+        for (char c : command.toCharArray()) {
+            transmitEcho(c);
         }
-    }
-
-    private void init() throws IOException, InterruptedException, EchoException {
         transmitEnd();
-        char echo = echo();
-        if ('#' != echo) {
-            throw new EchoException(echo, '#');
-        }
-        echo = echo();
-        if (' ' != echo) {
-            throw new EchoException(echo, ' ');
-        }
-
     }
-
 
     private void transmit(char ch) throws IOException, InterruptedException {
-        preReadyToTransmit.set(false);
-        readyToTransmit.set(false);
         out.writeByte(ch);
         out.flush();
     }
@@ -84,66 +53,28 @@ public class CommandTransmitter implements ReceiverListener {
         transmitEcho('\r', '\n');
     }
 
-    private void transmitEcho(char ch) {
+    private void transmitEcho(char ch) throws IOException, InterruptedException {
         transmitEcho(ch, ch);
     }
 
-    private void transmitEcho(char ch, char echoExpect) {
-        try {
-            transmit(ch);
-            char echoChar = echo();
-//            if (echoChar != echoExpect) {
-//                throw new EchoException(echoExpect, echoChar);
-//            }
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-            //todo механизм с отдачей, иногда допустить попытку подождать следующий символ
-            //todo разобраться с таймаутами, чтобы исключить бесконечное ожидание
-//        } catch (EchoException e) {
-//            e.printStackTrace();
-        }
-    }
-
-    private char echo() throws InterruptedException {
-        waitChar = true;
-        char res = (char) aChar.get();
-        while (waitChar) {
+    private void transmitEcho(char ch, char echoExpect) throws IOException, InterruptedException {
+        transmit(ch);
+        while (currentLine.isEmpty() || currentLine.get(currentLine.size() - 1) != echoExpect) {
+            //todo возможен вечное ожидание, нужно побороть переобределив ожидание с таймаутом
             this.wait();
-            res = (char) aChar.get();
-        }
-        return res;
-    }
-
-
-    @Override
-    public void recieve(char ch) {
-        synchronized (this) {
-            waitChar = false;
-            aChar.set(ch);
-
-            if (!preReadyToTransmit.get() && !readyToTransmit.get() && ch == '#') {
-                preReadyToTransmit.set(true);
-                this.notifyAll();
-                return;
-            }
-            if (preReadyToTransmit.get() && !readyToTransmit.get() && ch == ' ') {
-                preReadyToTransmit.set(false);
-                readyToTransmit.set(true);
-                this.notifyAll();
-                return;
-            }
-            this.notifyAll();
         }
     }
 
     @Override
-    public void receive(String string) {
-        synchronized (this) {
-            waitString = false;
-            this.notifyAll();
-        }
+    public synchronized void recieve(char ch) {
+        currentLine.add(ch);
+        notifyAll();
+    }
+
+    @Override
+    public synchronized void receive(String string) {
+        currentLine.clear();
+        lastLine = string;
+        notifyAll();
     }
 }

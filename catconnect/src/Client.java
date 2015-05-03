@@ -42,6 +42,10 @@ public class Client {
     }
 
     void send(String command) throws IOException, EchoException {
-        transmitter.send(command);
+        try {
+            transmitter.send(command);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 }
