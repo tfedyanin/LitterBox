@@ -1,3 +1,5 @@
+package org.tim;
+
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -16,12 +18,12 @@ import java.util.concurrent.TimeUnit;
  */
 public class LitterClient extends Application {
 
-    private static Client client = null;
+    private static LowLevelClient lowLevelClient = null;
 
 
     public static void main(String[] args) {
         try {
-            client = new Client(InetAddress.getByAddress(
+            lowLevelClient = new LowLevelClient(InetAddress.getByAddress(
                     new byte[]{(byte) 192, (byte) 168, 1, (byte) 177}),
                     80);
         } catch (UnknownHostException e1) {
@@ -60,13 +62,52 @@ public class LitterClient extends Application {
         Button water = new Button("Уровень воды");
         Button heat = new Button("Перегрев");
         Button program = new Button("Полная программа");
+        Button shakeUp = new Button("Вверх и стрятси");
+        Button fullDown = new Button("Полностью вниз");
 
 
+        shakeUp.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                try {
+                    lowLevelClient.send(Request.ARM_UP);
+                    TimeUnit.SECONDS.sleep(8);
+                    lowLevelClient.send(Request.ARM_DOWN);
+                    TimeUnit.SECONDS.sleep(5);
+                    lowLevelClient.send(Request.ARM_UP);
+                    TimeUnit.SECONDS.sleep(14);
+                    lowLevelClient.send(Request.ARM_STOP);
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (EchoException e) {
+                    e.printStackTrace();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        fullDown.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                try {
+                    lowLevelClient.send(Request.ARM_DOWN);
+                    TimeUnit.SECONDS.sleep(19);
+                    lowLevelClient.send(Request.ARM_STOP);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (EchoException e) {
+                    e.printStackTrace();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
         bowl.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
                 try {
-                    client.send(Request.BOWL_STATUS);
+                    lowLevelClient.send(Request.BOWL_STATUS);
                 } catch (IOException e) {
                     e.printStackTrace();
                 } catch (EchoException e) {
@@ -78,7 +119,7 @@ public class LitterClient extends Application {
             @Override
             public void handle(ActionEvent event) {
                 try {
-                    client.send(Request.BOWL_IN);
+                    lowLevelClient.send(Request.BOWL_IN);
                 } catch (IOException e) {
                     e.printStackTrace();
                 } catch (EchoException e) {
@@ -90,7 +131,7 @@ public class LitterClient extends Application {
             @Override
             public void handle(ActionEvent event) {
                 try {
-                    client.send(Request.BOWL_OUT);
+                    lowLevelClient.send(Request.BOWL_OUT);
                 } catch (IOException e) {
                     e.printStackTrace();
                 } catch (EchoException e) {
@@ -102,7 +143,7 @@ public class LitterClient extends Application {
             @Override
             public void handle(ActionEvent event) {
                 try {
-                    client.send(Request.BOWL_STOP);
+                    lowLevelClient.send(Request.BOWL_STOP);
                 } catch (IOException e) {
                     e.printStackTrace();
                 } catch (EchoException e) {
@@ -114,7 +155,7 @@ public class LitterClient extends Application {
             @Override
             public void handle(ActionEvent event) {
                 try {
-                    client.send(Request.ARM_STATUS);
+                    lowLevelClient.send(Request.ARM_STATUS);
                 } catch (IOException e) {
                     e.printStackTrace();
                 } catch (EchoException e) {
@@ -126,7 +167,7 @@ public class LitterClient extends Application {
             @Override
             public void handle(ActionEvent event) {
                 try {
-                    client.send(Request.ARM_DOWN);
+                    lowLevelClient.send(Request.ARM_DOWN);
                 } catch (IOException e) {
                     e.printStackTrace();
                 } catch (EchoException e) {
@@ -138,7 +179,7 @@ public class LitterClient extends Application {
             @Override
             public void handle(ActionEvent event) {
                 try {
-                    client.send(Request.ARM_UP);
+                    lowLevelClient.send(Request.ARM_UP);
                 } catch (IOException e) {
                     e.printStackTrace();
                 } catch (EchoException e) {
@@ -150,7 +191,7 @@ public class LitterClient extends Application {
             @Override
             public void handle(ActionEvent event) {
                 try {
-                    client.send(Request.ARM_STOP);
+                    lowLevelClient.send(Request.ARM_STOP);
                 } catch (IOException e) {
                     e.printStackTrace();
                 } catch (EchoException e) {
@@ -162,7 +203,7 @@ public class LitterClient extends Application {
             @Override
             public void handle(ActionEvent event) {
                 try {
-                    client.send(Request.DOSAGE_STATUS);
+                    lowLevelClient.send(Request.DOSAGE_STATUS);
                 } catch (IOException e) {
                     e.printStackTrace();
                 } catch (EchoException e) {
@@ -174,7 +215,7 @@ public class LitterClient extends Application {
             @Override
             public void handle(ActionEvent event) {
                 try {
-                    client.send(Request.DOSAGE_ON);
+                    lowLevelClient.send(Request.DOSAGE_ON);
                 } catch (IOException e) {
                     e.printStackTrace();
                 } catch (EchoException e) {
@@ -186,7 +227,7 @@ public class LitterClient extends Application {
             @Override
             public void handle(ActionEvent event) {
                 try {
-                    client.send(Request.DOSAGE_OFF);
+                    lowLevelClient.send(Request.DOSAGE_OFF);
                 } catch (IOException e) {
                     e.printStackTrace();
                 } catch (EchoException e) {
@@ -198,7 +239,7 @@ public class LitterClient extends Application {
             @Override
             public void handle(ActionEvent event) {
                 try {
-                    client.send(Request.TAP_STATUS);
+                    lowLevelClient.send(Request.TAP_STATUS);
                 } catch (IOException e) {
                     e.printStackTrace();
                 } catch (EchoException e) {
@@ -210,7 +251,7 @@ public class LitterClient extends Application {
             @Override
             public void handle(ActionEvent event) {
                 try {
-                    client.send(Request.TAP_ON);
+                    lowLevelClient.send(Request.TAP_ON);
                 } catch (IOException e) {
                     e.printStackTrace();
                 } catch (EchoException e) {
@@ -222,7 +263,7 @@ public class LitterClient extends Application {
             @Override
             public void handle(ActionEvent event) {
                 try {
-                    client.send(Request.TAP_OFF);
+                    lowLevelClient.send(Request.TAP_OFF);
                 } catch (IOException e) {
                     e.printStackTrace();
                 } catch (EchoException e) {
@@ -234,7 +275,7 @@ public class LitterClient extends Application {
             @Override
             public void handle(ActionEvent event) {
                 try {
-                    client.send(Request.DRAIN_STATUS);
+                    lowLevelClient.send(Request.DRAIN_STATUS);
                 } catch (IOException e) {
                     e.printStackTrace();
                 } catch (EchoException e) {
@@ -246,7 +287,7 @@ public class LitterClient extends Application {
             @Override
             public void handle(ActionEvent event) {
                 try {
-                    client.send(Request.DRAIN_ON);
+                    lowLevelClient.send(Request.DRAIN_ON);
                 } catch (IOException e) {
                     e.printStackTrace();
                 } catch (EchoException e) {
@@ -258,7 +299,7 @@ public class LitterClient extends Application {
             @Override
             public void handle(ActionEvent event) {
                 try {
-                    client.send(Request.DRAIN_OFF);
+                    lowLevelClient.send(Request.DRAIN_OFF);
                 } catch (IOException e) {
                     e.printStackTrace();
                 } catch (EchoException e) {
@@ -270,7 +311,7 @@ public class LitterClient extends Application {
             @Override
             public void handle(ActionEvent event) {
                 try {
-                    client.send(Request.DRYER_STATUS);
+                    lowLevelClient.send(Request.DRYER_STATUS);
                 } catch (IOException e) {
                     e.printStackTrace();
                 } catch (EchoException e) {
@@ -282,7 +323,7 @@ public class LitterClient extends Application {
             @Override
             public void handle(ActionEvent event) {
                 try {
-                    client.send(Request.DRYER_ON);
+                    lowLevelClient.send(Request.DRYER_ON);
                 } catch (IOException e) {
                     e.printStackTrace();
                 } catch (EchoException e) {
@@ -294,7 +335,7 @@ public class LitterClient extends Application {
             @Override
             public void handle(ActionEvent event) {
                 try {
-                    client.send(Request.DRYER_OFF);
+                    lowLevelClient.send(Request.DRYER_OFF);
                 } catch (IOException e) {
                     e.printStackTrace();
                 } catch (EchoException e) {
@@ -306,7 +347,7 @@ public class LitterClient extends Application {
             @Override
             public void handle(ActionEvent event) {
                 try {
-                    client.send(Request.CAT);
+                    lowLevelClient.send(Request.CAT);
                 } catch (IOException e) {
                     e.printStackTrace();
                 } catch (EchoException e) {
@@ -318,7 +359,7 @@ public class LitterClient extends Application {
             @Override
             public void handle(ActionEvent event) {
                 try {
-                    client.send(Request.WATER);
+                    lowLevelClient.send(Request.WATER);
                 } catch (IOException e) {
                     e.printStackTrace();
                 } catch (EchoException e) {
@@ -330,7 +371,7 @@ public class LitterClient extends Application {
             @Override
             public void handle(ActionEvent event) {
                 try {
-                    client.send(Request.HEAT);
+                    lowLevelClient.send(Request.HEAT);
                 } catch (IOException e) {
                     e.printStackTrace();
                 } catch (EchoException e) {
@@ -343,77 +384,44 @@ public class LitterClient extends Application {
             @Override
             public void handle(ActionEvent event) {
                 try {
-                    client.send(Request.BOWL_IN);
-                    client.send(Request.ARM_DOWN);
-                    Thread.sleep(13217);
-                    client.send(Request.ARM_STOP);
-                    Thread.sleep(18141);
-                    client.send(Request.BOWL_OUT);
-                    Thread.sleep(6201);
-                    client.send(Request.BOWL_IN);
-                    client.send(Request.ARM_DOWN);
-                    Thread.sleep(1000);
-                    client.send(Request.ARM_UP);
-                    Thread.sleep(535);
-                    client.send(Request.ARM_STOP);
-                    Thread.sleep(25206);
-                    client.send(Request.ARM_UP);
-                    Thread.sleep(8671);
-                    client.send(Request.ARM_DOWN);
-                    Thread.sleep(6002);
-                    client.send(Request.ARM_UP);
-                    Thread.sleep(15204);
-                    client.send(Request.ARM_DOWN);
-                    Thread.sleep(15703);
-                    client.send(Request.ARM_STOP);
-                    Thread.sleep(4701);
-                    client.send(Request.ARM_DOWN);
-                    Thread.sleep(1123);
-                    client.send(Request.ARM_UP);
-                    Thread.sleep(535);
-                    client.send(Request.ARM_STOP);
-                    Thread.sleep(25206);
-                    client.send(Request.ARM_UP);
-                    Thread.sleep(10671);
-                    client.send(Request.ARM_DOWN);
-                    Thread.sleep(6601);
-                    client.send(Request.ARM_UP);
-                    Thread.sleep(15141);
-                    client.send(Request.BOWL_OUT);
-                    client.send(Request.ARM_DOWN);
-                    Thread.sleep(15769);
-                    client.send(Request.ARM_UP);
-                    Thread.sleep(932);
-                    client.send(Request.ARM_STOP);
-                    client.send(Request.BOWL_OUT);
-                    client.send(Request.TAP_ON);
-                    client.send(Request.DOSAGE_ON);
-                    Thread.sleep(7_000);
-                    client.send(Request.DOSAGE_OFF);
-                    Thread.sleep(150_000);
-                    client.send(Request.TAP_OFF);
-                    client.send(Request.DRAIN_ON);
-                    Thread.sleep(100_000);
-                    client.send(Request.TAP_ON);
-                    Thread.sleep(50_000);
-                    client.send(Request.DRAIN_OFF);
-                    Thread.sleep(100_000);
-                    client.send(Request.TAP_OFF);
-                    client.send(Request.DRAIN_ON);
-                    client.send(Request.DRYER_ON);
-                    Thread.sleep(200_000);
-                    client.send(Request.DRAIN_OFF);
-                    client.send(Request.ARM_DOWN);
-                    Thread.sleep(2_000);
-                    client.send(Request.ARM_STOP);
-                    TimeUnit.MINUTES.sleep(12);
-                    client.send(Request.BOWL_IN);
-                    TimeUnit.MINUTES.sleep(12);
-                    client.send(Request.ARM_UP);
+                    lowLevelClient.send(Request.ARM_DOWN);
+                    TimeUnit.SECONDS.sleep(19);
+                    lowLevelClient.send(Request.ARM_STOP);
+                    lowLevelClient.send(Request.BOWL_OUT);
+                    lowLevelClient.send(Request.TAP_ON);
+                    lowLevelClient.send(Request.DOSAGE_ON);
                     TimeUnit.SECONDS.sleep(12);
-                    client.send(Request.ARM_STOP);
-                    client.send(Request.BOWL_STOP);
-                    client.send(Request.DRYER_OFF);
+                    lowLevelClient.send(Request.DOSAGE_OFF);
+                    TimeUnit.MINUTES.sleep(3);
+                    lowLevelClient.send(Request.TAP_OFF);
+                    lowLevelClient.send(Request.DRAIN_ON);
+                    TimeUnit.MINUTES.sleep(5);
+                    lowLevelClient.send(Request.DRAIN_OFF);
+                    lowLevelClient.send(Request.TAP_ON);
+                    TimeUnit.MINUTES.sleep(2);
+                    lowLevelClient.send(Request.TAP_OFF);
+                    lowLevelClient.send(Request.DRAIN_ON);
+                    TimeUnit.MINUTES.sleep(5);
+                    lowLevelClient.send(Request.DRAIN_OFF);
+                    TimeUnit.SECONDS.sleep(15);
+                    lowLevelClient.send(Request.DRAIN_ON);
+                    TimeUnit.SECONDS.sleep(45);
+                    lowLevelClient.send(Request.DRAIN_OFF);
+                    TimeUnit.SECONDS.sleep(15);
+                    lowLevelClient.send(Request.DRAIN_ON);
+                    TimeUnit.SECONDS.sleep(15);
+                    lowLevelClient.send(Request.DRAIN_OFF);
+                    TimeUnit.SECONDS.sleep(15);
+                    lowLevelClient.send(Request.DRAIN_ON);
+                    TimeUnit.SECONDS.sleep(60);
+                    lowLevelClient.send(Request.DRAIN_OFF);
+                    lowLevelClient.send(Request.DRYER_ON);
+                    TimeUnit.MINUTES.sleep(24);
+                    lowLevelClient.send(Request.DRYER_OFF);
+                    lowLevelClient.send(Request.ARM_UP);
+                    TimeUnit.SECONDS.sleep(18);
+                    lowLevelClient.send(Request.ARM_STOP);
+                    lowLevelClient.send(Request.BOWL_STOP);
                 } catch (EchoException e) {
                     e.printStackTrace();
                 } catch (IOException e) {
@@ -434,7 +442,7 @@ public class LitterClient extends Application {
         root.addRow(4, drain, drainon, drainoff);
         root.addRow(5, dryer, dryeron, dryeroff);
         root.addRow(6, cat, water, heat);
-        root.addRow(7, program);
+        root.addRow(7, program, shakeUp, fullDown);
 
         primaryStage.setScene(new Scene(root, 800, 600));
         primaryStage.show();

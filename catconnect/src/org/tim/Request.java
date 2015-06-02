@@ -1,3 +1,5 @@
+package org.tim;
+
 /**
  * Created by Marianna on 07.04.2015.
  */

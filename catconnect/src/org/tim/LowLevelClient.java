@@ -1,14 +1,14 @@
-import java.io.BufferedReader;
+package org.tim;
+
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.net.InetAddress;
 import java.net.Socket;
 
 /**
  * Created by Marianna on 07.04.2015.
  */
-public class Client {
+public class LowLevelClient {
     private final Socket socket;
 //    private final DataOutputStream out;
 
@@ -16,7 +16,7 @@ public class Client {
     private final CommandTransmitter transmitter;
 
 
-    public Client(InetAddress address, int port) throws IOException {
+    public LowLevelClient(InetAddress address, int port) throws IOException {
         socket = new Socket(address, port);
         transmitter = new CommandTransmitter(new DataOutputStream(socket.getOutputStream()));
         Receiver receiver = new Receiver(socket.getInputStream());
