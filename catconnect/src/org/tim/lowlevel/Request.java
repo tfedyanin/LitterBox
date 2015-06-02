@@ -1,7 +1,9 @@
-package org.tim;
+package org.tim.lowlevel;
 
 /**
- * Created by Marianna on 07.04.2015.
+ * User: Marianna
+ * 07.04.2015
+ * 22:09
  */
 public enum Request {
     BOWL_STATUS("bowl"),

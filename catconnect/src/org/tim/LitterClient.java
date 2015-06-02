@@ -1,20 +1,21 @@
 package org.tim;
 
 import javafx.application.Application;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
+import org.tim.lowlevel.LowLevelClient;
+import org.tim.lowlevel.Request;
 
-import java.io.*;
+import java.io.IOException;
 import java.net.InetAddress;
-import java.net.UnknownHostException;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Created by Marianna on 05.04.2015.
+ * User: Marianna
+ * 05.04.2015
+ * 21:57
  */
 public class LitterClient extends Application {
 
@@ -26,8 +27,6 @@ public class LitterClient extends Application {
             lowLevelClient = new LowLevelClient(InetAddress.getByAddress(
                     new byte[]{(byte) 192, (byte) 168, 1, (byte) 177}),
                     80);
-        } catch (UnknownHostException e1) {
-            e1.printStackTrace();
         } catch (IOException e1) {
             e1.printStackTrace();
         }
@@ -39,25 +38,25 @@ public class LitterClient extends Application {
     public void start(Stage primaryStage) throws Exception {
         primaryStage.setTitle("Control!");
         Button bowl = new Button("Чаша");
-        Button bowlcw_in = new Button("В совок");
-        Button bowlccw_out = new Button("Из совка");
-        Button bowlstop = new Button("Выключить");
+        Button bowlIn = new Button("В совок");
+        Button bowlOut = new Button("Из совка");
+        Button bowlStop = new Button("Выключить");
         Button arm = new Button("Совок");
-        Button armdown = new Button("Вниз");
-        Button armup = new Button("Вверх");
-        Button armstop = new Button("Выключить");
+        Button armDown = new Button("Вниз");
+        Button armUp = new Button("Вверх");
+        Button armStop = new Button("Выключить");
         Button dosage = new Button("Шампунь");
-        Button dosageon = new Button("Включить");
-        Button dosageoff = new Button("Выключить");
+        Button dosageOn = new Button("Включить");
+        Button dosageOff = new Button("Выключить");
         Button tap = new Button("Вода");
-        Button tapon = new Button("Включить");
-        Button tapoff = new Button("Выключить");
+        Button tapOn = new Button("Включить");
+        Button tapOff = new Button("Выключить");
         Button drain = new Button("Дренаж");
-        Button drainon = new Button("Включить");
-        Button drainoff = new Button("Выключить");
+        Button drainOn = new Button("Включить");
+        Button drainOff = new Button("Выключить");
         Button dryer = new Button("Фен");
-        Button dryeron = new Button("Включить");
-        Button dryeroff = new Button("Выключить");
+        Button dryerOn = new Button("Включить");
+        Button dryerOff = new Button("Выключить");
         Button cat = new Button("Кот");
         Button water = new Button("Уровень воды");
         Button heat = new Button("Перегрев");
@@ -66,381 +65,241 @@ public class LitterClient extends Application {
         Button fullDown = new Button("Полностью вниз");
 
 
-        shakeUp.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                try {
-                    lowLevelClient.send(Request.ARM_UP);
-                    TimeUnit.SECONDS.sleep(8);
-                    lowLevelClient.send(Request.ARM_DOWN);
-                    TimeUnit.SECONDS.sleep(5);
-                    lowLevelClient.send(Request.ARM_UP);
-                    TimeUnit.SECONDS.sleep(14);
-                    lowLevelClient.send(Request.ARM_STOP);
+        shakeUp.setOnAction(event -> {
+            try {
+                lowLevelClient.send(Request.ARM_UP);
+                TimeUnit.SECONDS.sleep(8);
+                lowLevelClient.send(Request.ARM_DOWN);
+                TimeUnit.SECONDS.sleep(5);
+                lowLevelClient.send(Request.ARM_UP);
+                TimeUnit.SECONDS.sleep(14);
+                lowLevelClient.send(Request.ARM_STOP);
 
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } catch (EchoException e) {
-                    e.printStackTrace();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
+            } catch (IOException | InterruptedException e) {
+                e.printStackTrace();
             }
         });
-        fullDown.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                try {
-                    lowLevelClient.send(Request.ARM_DOWN);
-                    TimeUnit.SECONDS.sleep(19);
-                    lowLevelClient.send(Request.ARM_STOP);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } catch (EchoException e) {
-                    e.printStackTrace();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
+        fullDown.setOnAction(event -> {
+            try {
+                lowLevelClient.send(Request.ARM_DOWN);
+                TimeUnit.SECONDS.sleep(19);
+                lowLevelClient.send(Request.ARM_STOP);
+            } catch (IOException | InterruptedException e) {
+                e.printStackTrace();
             }
         });
-        bowl.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                try {
-                    lowLevelClient.send(Request.BOWL_STATUS);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } catch (EchoException e) {
-                    e.printStackTrace();
-                }
+        bowl.setOnAction(event -> {
+            try {
+                lowLevelClient.send(Request.BOWL_STATUS);
+            } catch (IOException | InterruptedException e) {
+                e.printStackTrace();
             }
         });
-        bowlcw_in.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                try {
-                    lowLevelClient.send(Request.BOWL_IN);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } catch (EchoException e) {
-                    e.printStackTrace();
-                }
+        bowlIn.setOnAction(event -> {
+            try {
+                lowLevelClient.send(Request.BOWL_IN);
+            } catch (IOException | InterruptedException e) {
+                e.printStackTrace();
             }
         });
-        bowlccw_out.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                try {
-                    lowLevelClient.send(Request.BOWL_OUT);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } catch (EchoException e) {
-                    e.printStackTrace();
-                }
+        bowlOut.setOnAction(event -> {
+            try {
+                lowLevelClient.send(Request.BOWL_OUT);
+            } catch (IOException | InterruptedException e) {
+                e.printStackTrace();
             }
         });
-        bowlstop.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                try {
-                    lowLevelClient.send(Request.BOWL_STOP);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } catch (EchoException e) {
-                    e.printStackTrace();
-                }
+        bowlStop.setOnAction(event -> {
+            try {
+                lowLevelClient.send(Request.BOWL_STOP);
+            } catch (IOException | InterruptedException e) {
+                e.printStackTrace();
             }
         });
-        arm.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                try {
-                    lowLevelClient.send(Request.ARM_STATUS);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } catch (EchoException e) {
-                    e.printStackTrace();
-                }
+        arm.setOnAction(event -> {
+            try {
+                lowLevelClient.send(Request.ARM_STATUS);
+            } catch (IOException | InterruptedException e) {
+                e.printStackTrace();
             }
         });
-        armdown.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                try {
-                    lowLevelClient.send(Request.ARM_DOWN);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } catch (EchoException e) {
-                    e.printStackTrace();
-                }
+        armDown.setOnAction(event -> {
+            try {
+                lowLevelClient.send(Request.ARM_DOWN);
+            } catch (IOException |
+                    InterruptedException e) {
+                e.printStackTrace();
             }
         });
-        armup.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                try {
-                    lowLevelClient.send(Request.ARM_UP);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } catch (EchoException e) {
-                    e.printStackTrace();
-                }
+        armUp.setOnAction(event -> {
+            try {
+                lowLevelClient.send(Request.ARM_UP);
+            } catch (IOException | InterruptedException e) {
+                e.printStackTrace();
             }
         });
-        armstop.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                try {
-                    lowLevelClient.send(Request.ARM_STOP);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } catch (EchoException e) {
-                    e.printStackTrace();
-                }
+        armStop.setOnAction(
+                event -> {
+                    try {
+                        lowLevelClient.send(Request.ARM_STOP);
+                    } catch (IOException | InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                });
+        dosage.setOnAction(event -> {
+            try {
+                lowLevelClient.send(Request.DOSAGE_STATUS);
+            } catch (IOException | InterruptedException e) {
+                e.printStackTrace();
             }
         });
-        dosage.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                try {
-                    lowLevelClient.send(Request.DOSAGE_STATUS);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } catch (EchoException e) {
-                    e.printStackTrace();
-                }
+        dosageOn.setOnAction(event -> {
+            try {
+                lowLevelClient.send(Request.DOSAGE_ON);
+            } catch (IOException | InterruptedException e) {
+                e.printStackTrace();
             }
         });
-        dosageon.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                try {
-                    lowLevelClient.send(Request.DOSAGE_ON);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } catch (EchoException e) {
-                    e.printStackTrace();
-                }
+        dosageOff.setOnAction(event -> {
+            try {
+                lowLevelClient.send(Request.DOSAGE_OFF);
+            } catch (IOException | InterruptedException e) {
+                e.printStackTrace();
             }
         });
-        dosageoff.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                try {
-                    lowLevelClient.send(Request.DOSAGE_OFF);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } catch (EchoException e) {
-                    e.printStackTrace();
-                }
+        tap.setOnAction(event -> {
+            try {
+                lowLevelClient.send(Request.TAP_STATUS);
+            } catch (IOException | InterruptedException e) {
+                e.printStackTrace();
             }
         });
-        tap.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                try {
-                    lowLevelClient.send(Request.TAP_STATUS);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } catch (EchoException e) {
-                    e.printStackTrace();
-                }
+        tapOn.setOnAction(event -> {
+            try {
+                lowLevelClient.send(Request.TAP_ON);
+            } catch (IOException | InterruptedException e) {
+                e.printStackTrace();
             }
         });
-        tapon.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                try {
-                    lowLevelClient.send(Request.TAP_ON);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } catch (EchoException e) {
-                    e.printStackTrace();
-                }
+        tapOff.setOnAction(event -> {
+            try {
+                lowLevelClient.send(Request.TAP_OFF);
+            } catch (IOException | InterruptedException e) {
+                e.printStackTrace();
             }
         });
-        tapoff.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                try {
-                    lowLevelClient.send(Request.TAP_OFF);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } catch (EchoException e) {
-                    e.printStackTrace();
-                }
+        drain.setOnAction(event -> {
+            try {
+                lowLevelClient.send(Request.DRAIN_STATUS);
+            } catch (IOException | InterruptedException e) {
+                e.printStackTrace();
             }
         });
-        drain.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                try {
-                    lowLevelClient.send(Request.DRAIN_STATUS);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } catch (EchoException e) {
-                    e.printStackTrace();
-                }
+        drainOn.setOnAction(event -> {
+            try {
+                lowLevelClient.send(Request.DRAIN_ON);
+            } catch (IOException | InterruptedException e) {
+                e.printStackTrace();
             }
         });
-        drainon.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                try {
-                    lowLevelClient.send(Request.DRAIN_ON);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } catch (EchoException e) {
-                    e.printStackTrace();
-                }
+        drainOff.setOnAction(event -> {
+            try {
+                lowLevelClient.send(Request.DRAIN_OFF);
+            } catch (IOException | InterruptedException e) {
+                e.printStackTrace();
             }
         });
-        drainoff.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                try {
-                    lowLevelClient.send(Request.DRAIN_OFF);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } catch (EchoException e) {
-                    e.printStackTrace();
-                }
+        dryer.setOnAction(event -> {
+            try {
+                lowLevelClient.send(Request.DRYER_STATUS);
+            } catch (IOException | InterruptedException e) {
+                e.printStackTrace();
             }
         });
-        dryer.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                try {
-                    lowLevelClient.send(Request.DRYER_STATUS);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } catch (EchoException e) {
-                    e.printStackTrace();
-                }
+        dryerOn.setOnAction(event -> {
+            try {
+                lowLevelClient.send(Request.DRYER_ON);
+            } catch (IOException | InterruptedException e) {
+                e.printStackTrace();
             }
         });
-        dryeron.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                try {
-                    lowLevelClient.send(Request.DRYER_ON);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } catch (EchoException e) {
-                    e.printStackTrace();
-                }
+        dryerOff.setOnAction(event -> {
+            try {
+                lowLevelClient.send(Request.DRYER_OFF);
+            } catch (IOException | InterruptedException e) {
+                e.printStackTrace();
             }
         });
-        dryeroff.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                try {
-                    lowLevelClient.send(Request.DRYER_OFF);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } catch (EchoException e) {
-                    e.printStackTrace();
-                }
+        cat.setOnAction(
+                event -> {
+                    try {
+                        lowLevelClient.send(Request.CAT);
+                    } catch (IOException | InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                });
+        water.setOnAction(event -> {
+            try {
+                lowLevelClient.send(Request.WATER);
+            } catch (IOException | InterruptedException e) {
+                e.printStackTrace();
             }
         });
-        cat.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                try {
-                    lowLevelClient.send(Request.CAT);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } catch (EchoException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-        water.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                try {
-                    lowLevelClient.send(Request.WATER);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } catch (EchoException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-        heat.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                try {
-                    lowLevelClient.send(Request.HEAT);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } catch (EchoException e) {
-                    e.printStackTrace();
-                }
+        heat.setOnAction(event -> {
+            try {
+                lowLevelClient.send(Request.HEAT);
+            } catch (IOException | InterruptedException e) {
+                e.printStackTrace();
             }
         });
 
-        program.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                try {
-                    lowLevelClient.send(Request.ARM_DOWN);
-                    TimeUnit.SECONDS.sleep(19);
-                    lowLevelClient.send(Request.ARM_STOP);
-                    lowLevelClient.send(Request.BOWL_OUT);
-                    lowLevelClient.send(Request.TAP_ON);
-                    lowLevelClient.send(Request.DOSAGE_ON);
-                    TimeUnit.SECONDS.sleep(12);
-                    lowLevelClient.send(Request.DOSAGE_OFF);
-                    TimeUnit.MINUTES.sleep(3);
-                    lowLevelClient.send(Request.TAP_OFF);
-                    lowLevelClient.send(Request.DRAIN_ON);
-                    TimeUnit.MINUTES.sleep(5);
-                    lowLevelClient.send(Request.DRAIN_OFF);
-                    lowLevelClient.send(Request.TAP_ON);
-                    TimeUnit.MINUTES.sleep(2);
-                    lowLevelClient.send(Request.TAP_OFF);
-                    lowLevelClient.send(Request.DRAIN_ON);
-                    TimeUnit.MINUTES.sleep(5);
-                    lowLevelClient.send(Request.DRAIN_OFF);
-                    TimeUnit.SECONDS.sleep(15);
-                    lowLevelClient.send(Request.DRAIN_ON);
-                    TimeUnit.SECONDS.sleep(45);
-                    lowLevelClient.send(Request.DRAIN_OFF);
-                    TimeUnit.SECONDS.sleep(15);
-                    lowLevelClient.send(Request.DRAIN_ON);
-                    TimeUnit.SECONDS.sleep(15);
-                    lowLevelClient.send(Request.DRAIN_OFF);
-                    TimeUnit.SECONDS.sleep(15);
-                    lowLevelClient.send(Request.DRAIN_ON);
-                    TimeUnit.SECONDS.sleep(60);
-                    lowLevelClient.send(Request.DRAIN_OFF);
-                    lowLevelClient.send(Request.DRYER_ON);
-                    TimeUnit.MINUTES.sleep(24);
-                    lowLevelClient.send(Request.DRYER_OFF);
-                    lowLevelClient.send(Request.ARM_UP);
-                    TimeUnit.SECONDS.sleep(18);
-                    lowLevelClient.send(Request.ARM_STOP);
-                    lowLevelClient.send(Request.BOWL_STOP);
-                } catch (EchoException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
+        program.setOnAction(
+                event -> {
+                    try {
+                        lowLevelClient.send(Request.ARM_DOWN);
+                        TimeUnit.SECONDS.sleep(19);
+                        lowLevelClient.send(Request.ARM_STOP);
+                        lowLevelClient.send(Request.BOWL_OUT);
+                        lowLevelClient.send(Request.TAP_ON);
+                        lowLevelClient.send(Request.DOSAGE_ON);
+                        TimeUnit.SECONDS.sleep(12);
+                        lowLevelClient.send(Request.DOSAGE_OFF);
+                        TimeUnit.MINUTES.sleep(3);
+                        lowLevelClient.send(Request.TAP_OFF);
+                        lowLevelClient.send(Request.DRAIN_ON);
+                        TimeUnit.MINUTES.sleep(2);
+                        lowLevelClient.send(Request.DRAIN_OFF);
+                        lowLevelClient.send(Request.TAP_ON);
+                        TimeUnit.MINUTES.sleep(2);
+                        lowLevelClient.send(Request.TAP_OFF);
+                        lowLevelClient.send(Request.DRAIN_ON);
+                        TimeUnit.MINUTES.sleep(2);
+                        lowLevelClient.send(Request.DRAIN_OFF);
+                        TimeUnit.SECONDS.sleep(15);
+                        lowLevelClient.send(Request.DRAIN_ON);
+                        TimeUnit.SECONDS.sleep(45);
+                        lowLevelClient.send(Request.DRAIN_OFF);
+                        lowLevelClient.send(Request.DRYER_ON);
+                        TimeUnit.MINUTES.sleep(24);
+                        lowLevelClient.send(Request.DRYER_OFF);
+                        lowLevelClient.send(Request.ARM_UP);
+                        TimeUnit.SECONDS.sleep(18);
+                        lowLevelClient.send(Request.ARM_STOP);
+                        lowLevelClient.send(Request.BOWL_STOP);
+                    } catch (IOException | InterruptedException e) {
+                        e.printStackTrace();
+                    }
 
-            }
-        });
+                });
 
 
         GridPane root = new GridPane();
-        root.addRow(0, bowl, bowlcw_in, bowlccw_out, bowlstop);
-        root.addRow(1, arm, armup, armdown, armstop);
-        root.addRow(2, dosage, dosageon, dosageoff);
-        root.addRow(3, tap, tapon, tapoff);
-        root.addRow(4, drain, drainon, drainoff);
-        root.addRow(5, dryer, dryeron, dryeroff);
+        root.addRow(0, bowl, bowlIn, bowlOut, bowlStop);
+        root.addRow(1, arm, armUp, armDown, armStop);
+        root.addRow(2, dosage, dosageOn, dosageOff);
+        root.addRow(3, tap, tapOn, tapOff);
+        root.addRow(4, drain, drainOn, drainOff);
+        root.addRow(5, dryer, dryerOn, dryerOff);
         root.addRow(6, cat, water, heat);
         root.addRow(7, program, shakeUp, fullDown);
 

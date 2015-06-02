@@ -1,4 +1,4 @@
-package org.tim;
+package org.tim.lowlevel;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -11,7 +11,7 @@ import java.util.List;
  * 12.04.2015 17:21
  */
 public class Receiver implements Runnable {
-    private final List<ReceiverListener> listeners = new LinkedList<ReceiverListener>();
+    private final List<ReceiverListener> listeners = new LinkedList<>();
     private final InputStream stream;
     private ArrayList<Character> buffer;
 
@@ -35,7 +35,7 @@ public class Receiver implements Runnable {
 
     public Receiver(InputStream inputStream) {
         this.stream = inputStream;
-        buffer = new ArrayList<Character>();
+        buffer = new ArrayList<>();
     }
 
     @Override
@@ -46,9 +46,7 @@ public class Receiver implements Runnable {
                 notifyListeners(read);
                 if (read == '\n') {
                     StringBuilder builder = new StringBuilder();
-                    for (Character character : buffer) {
-                        builder.append(character);
-                    }
+                    buffer.forEach(builder::append);
                     notifyListeners(builder.toString());
                     buffer.clear();
                     continue;
@@ -64,7 +62,7 @@ public class Receiver implements Runnable {
     private void notifyListeners(char ch) {
         synchronized (listeners) {
             for (ReceiverListener listener : listeners) {
-                listener.recieve(ch);
+                listener.receive(ch);
             }
         }
     }

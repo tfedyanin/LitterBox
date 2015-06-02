@@ -1,4 +1,4 @@
-package org.tim;
+package org.tim.lowlevel;
 
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -11,8 +11,8 @@ import java.util.List;
  */
 public class CommandTransmitter implements ReceiverListener {
     private final DataOutputStream out;
-    private String lastLine;
-    private List<Character> currentLine = new ArrayList<Character>(64){
+
+    private List<Character> currentLine = new ArrayList<Character>(64) {
         @Override
         public String toString() {
             StringBuilder stringBuilder = new StringBuilder(this.size());
@@ -21,7 +21,7 @@ public class CommandTransmitter implements ReceiverListener {
         }
     };
 
-    public CommandTransmitter(DataOutputStream out) {
+    public CommandTransmitter(final DataOutputStream out) {
         this.out = out;
     }
 
@@ -31,24 +31,16 @@ public class CommandTransmitter implements ReceiverListener {
         }
         transmit('\r');
         while (currentLine.toString().equals("# ")) {
-            //todo возможен вечное ожидание, нужно побороть переобределив ожидание с таймаутом
             this.wait();
         }
     }
 
     synchronized void send(String command) throws IOException, InterruptedException {
-        //todo При черезмерном ожидании или ошибке выполнения команды требуется повторить попытку. Количество повторов
-        // должно быть определно, после критическая ошибка
         getReady();
         for (char c : command.toCharArray()) {
             transmitEcho(c);
         }
         transmitEnd();
-    }
-
-    private void transmit(char ch) throws IOException, InterruptedException {
-        out.writeByte(ch);
-        out.flush();
     }
 
     private void transmitEnd() throws IOException, InterruptedException {
@@ -59,24 +51,27 @@ public class CommandTransmitter implements ReceiverListener {
         transmitEcho(ch, ch);
     }
 
-    private void transmitEcho(char ch, char echoExpect) throws IOException, InterruptedException {
+    private void transmitEcho(final char ch, final char echo) throws IOException, InterruptedException {
         transmit(ch);
-        while (currentLine.isEmpty() || currentLine.get(currentLine.size() - 1) != echoExpect) {
-            //todo возможен вечное ожидание, нужно побороть переобределив ожидание с таймаутом
+        while (currentLine.isEmpty() || currentLine.get(currentLine.size() - 1) != echo) {
             this.wait();
         }
     }
 
+    private void transmit(final char ch) throws IOException {
+        out.writeByte(ch);
+        out.flush();
+    }
+
     @Override
-    public synchronized void recieve(char ch) {
+    public synchronized void receive(final char ch) {
         currentLine.add(ch);
         notifyAll();
     }
 
     @Override
-    public synchronized void receive(String string) {
+    public synchronized void receive(final String string) {
         currentLine.clear();
-        lastLine = string;
         notifyAll();
     }
 }

@@ -1,4 +1,6 @@
-package org.tim;
+package org.tim.hightlevel;
+
+import org.tim.lowlevel.LowLevelClient;
 
 import java.util.concurrent.ExecutorService;
 

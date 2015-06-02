@@ -1,6 +1,6 @@
-package org.tim.comands;
+package org.tim.hightlevel.comands;
 
-import org.tim.EchoException;
+import org.tim.exceptions.EchoException;
 
 /**
  * User: Tim

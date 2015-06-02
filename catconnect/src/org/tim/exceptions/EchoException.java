@@ -1,7 +1,9 @@
-package org.tim;
+package org.tim.exceptions;
 
 /**
- * Created by Marianna on 07.04.2015.
+ * User: Marianna
+ * 07.04.2015
+ * 22:19
  */
 public class EchoException extends Exception {
     public EchoException(String command, String result) {
