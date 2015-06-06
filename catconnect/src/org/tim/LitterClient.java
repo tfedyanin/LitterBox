@@ -6,7 +6,7 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import org.tim.lowlevel.LowLevelClient;
-import org.tim.lowlevel.Request;
+import org.tim.lowlevel.Command;
 
 import java.io.IOException;
 import java.net.InetAddress;
@@ -67,13 +67,13 @@ public class LitterClient extends Application {
 
         shakeUp.setOnAction(event -> {
             try {
-                lowLevelClient.send(Request.ARM_UP);
+                lowLevelClient.send(Command.ARM_UP);
                 TimeUnit.SECONDS.sleep(8);
-                lowLevelClient.send(Request.ARM_DOWN);
+                lowLevelClient.send(Command.ARM_DOWN);
                 TimeUnit.SECONDS.sleep(5);
-                lowLevelClient.send(Request.ARM_UP);
+                lowLevelClient.send(Command.ARM_UP);
                 TimeUnit.SECONDS.sleep(14);
-                lowLevelClient.send(Request.ARM_STOP);
+                lowLevelClient.send(Command.ARM_STOP);
 
             } catch (IOException | InterruptedException e) {
                 e.printStackTrace();
@@ -81,51 +81,51 @@ public class LitterClient extends Application {
         });
         fullDown.setOnAction(event -> {
             try {
-                lowLevelClient.send(Request.ARM_DOWN);
+                lowLevelClient.send(Command.ARM_DOWN);
                 TimeUnit.SECONDS.sleep(19);
-                lowLevelClient.send(Request.ARM_STOP);
+                lowLevelClient.send(Command.ARM_STOP);
             } catch (IOException | InterruptedException e) {
                 e.printStackTrace();
             }
         });
         bowl.setOnAction(event -> {
             try {
-                lowLevelClient.send(Request.BOWL_STATUS);
+                lowLevelClient.send(Command.BOWL_STATUS);
             } catch (IOException | InterruptedException e) {
                 e.printStackTrace();
             }
         });
         bowlIn.setOnAction(event -> {
             try {
-                lowLevelClient.send(Request.BOWL_IN);
+                lowLevelClient.send(Command.BOWL_IN);
             } catch (IOException | InterruptedException e) {
                 e.printStackTrace();
             }
         });
         bowlOut.setOnAction(event -> {
             try {
-                lowLevelClient.send(Request.BOWL_OUT);
+                lowLevelClient.send(Command.BOWL_OUT);
             } catch (IOException | InterruptedException e) {
                 e.printStackTrace();
             }
         });
         bowlStop.setOnAction(event -> {
             try {
-                lowLevelClient.send(Request.BOWL_STOP);
+                lowLevelClient.send(Command.BOWL_STOP);
             } catch (IOException | InterruptedException e) {
                 e.printStackTrace();
             }
         });
         arm.setOnAction(event -> {
             try {
-                lowLevelClient.send(Request.ARM_STATUS);
+                lowLevelClient.send(Command.ARM_STATUS);
             } catch (IOException | InterruptedException e) {
                 e.printStackTrace();
             }
         });
         armDown.setOnAction(event -> {
             try {
-                lowLevelClient.send(Request.ARM_DOWN);
+                lowLevelClient.send(Command.ARM_DOWN);
             } catch (IOException |
                     InterruptedException e) {
                 e.printStackTrace();
@@ -133,7 +133,7 @@ public class LitterClient extends Application {
         });
         armUp.setOnAction(event -> {
             try {
-                lowLevelClient.send(Request.ARM_UP);
+                lowLevelClient.send(Command.ARM_UP);
             } catch (IOException | InterruptedException e) {
                 e.printStackTrace();
             }
@@ -141,91 +141,95 @@ public class LitterClient extends Application {
         armStop.setOnAction(
                 event -> {
                     try {
-                        lowLevelClient.send(Request.ARM_STOP);
+                        lowLevelClient.send(Command.ARM_STOP);
                     } catch (IOException | InterruptedException e) {
                         e.printStackTrace();
                     }
                 });
         dosage.setOnAction(event -> {
             try {
-                lowLevelClient.send(Request.DOSAGE_STATUS);
+                lowLevelClient.send(Command.DOSAGE_STATUS);
             } catch (IOException | InterruptedException e) {
                 e.printStackTrace();
             }
         });
         dosageOn.setOnAction(event -> {
             try {
-                lowLevelClient.send(Request.DOSAGE_ON);
+                lowLevelClient.send(Command.DOSAGE_ON);
             } catch (IOException | InterruptedException e) {
                 e.printStackTrace();
             }
         });
         dosageOff.setOnAction(event -> {
             try {
-                lowLevelClient.send(Request.DOSAGE_OFF);
+                lowLevelClient.send(Command.DOSAGE_OFF);
             } catch (IOException | InterruptedException e) {
                 e.printStackTrace();
             }
         });
         tap.setOnAction(event -> {
             try {
-                lowLevelClient.send(Request.TAP_STATUS);
+                lowLevelClient.send(Command.TAP_STATUS);
             } catch (IOException | InterruptedException e) {
                 e.printStackTrace();
             }
         });
         tapOn.setOnAction(event -> {
             try {
-                lowLevelClient.send(Request.TAP_ON);
+                lowLevelClient.send(Command.TAP_ON);
             } catch (IOException | InterruptedException e) {
                 e.printStackTrace();
             }
         });
         tapOff.setOnAction(event -> {
             try {
-                lowLevelClient.send(Request.TAP_OFF);
+                lowLevelClient.send(Command.TAP_OFF);
             } catch (IOException | InterruptedException e) {
                 e.printStackTrace();
             }
         });
         drain.setOnAction(event -> {
             try {
-                lowLevelClient.send(Request.DRAIN_STATUS);
+                lowLevelClient.send(Command.DRAIN_STATUS);
             } catch (IOException | InterruptedException e) {
                 e.printStackTrace();
             }
         });
         drainOn.setOnAction(event -> {
             try {
-                lowLevelClient.send(Request.DRAIN_ON);
+                lowLevelClient.send(Command.DRAIN_ON);
             } catch (IOException | InterruptedException e) {
                 e.printStackTrace();
             }
         });
         drainOff.setOnAction(event -> {
             try {
-                lowLevelClient.send(Request.DRAIN_OFF);
+                lowLevelClient.send(Command.DRAIN_OFF);
             } catch (IOException | InterruptedException e) {
                 e.printStackTrace();
             }
         });
         dryer.setOnAction(event -> {
             try {
-                lowLevelClient.send(Request.DRYER_STATUS);
+                lowLevelClient.send(Command.DRYER_STATUS);
             } catch (IOException | InterruptedException e) {
                 e.printStackTrace();
             }
         });
         dryerOn.setOnAction(event -> {
             try {
-                lowLevelClient.send(Request.DRYER_ON);
+                lowLevelClient.send(Command.DRYER_ON);
+                TimeUnit.MINUTES.sleep(20);
+                lowLevelClient.send(Command.DRYER_OFF);
+                lowLevelClient.send(Command.BOWL_STOP);
+
             } catch (IOException | InterruptedException e) {
                 e.printStackTrace();
             }
         });
         dryerOff.setOnAction(event -> {
             try {
-                lowLevelClient.send(Request.DRYER_OFF);
+                lowLevelClient.send(Command.DRYER_OFF);
             } catch (IOException | InterruptedException e) {
                 e.printStackTrace();
             }
@@ -233,21 +237,21 @@ public class LitterClient extends Application {
         cat.setOnAction(
                 event -> {
                     try {
-                        lowLevelClient.send(Request.CAT);
+                        lowLevelClient.send(Command.CAT);
                     } catch (IOException | InterruptedException e) {
                         e.printStackTrace();
                     }
                 });
         water.setOnAction(event -> {
             try {
-                lowLevelClient.send(Request.WATER);
+                lowLevelClient.send(Command.WATER);
             } catch (IOException | InterruptedException e) {
                 e.printStackTrace();
             }
         });
         heat.setOnAction(event -> {
             try {
-                lowLevelClient.send(Request.HEAT);
+                lowLevelClient.send(Command.HEAT);
             } catch (IOException | InterruptedException e) {
                 e.printStackTrace();
             }
@@ -256,36 +260,36 @@ public class LitterClient extends Application {
         program.setOnAction(
                 event -> {
                     try {
-                        lowLevelClient.send(Request.ARM_DOWN);
+                        lowLevelClient.send(Command.ARM_DOWN);
                         TimeUnit.SECONDS.sleep(19);
-                        lowLevelClient.send(Request.ARM_STOP);
-                        lowLevelClient.send(Request.BOWL_OUT);
-                        lowLevelClient.send(Request.TAP_ON);
-                        lowLevelClient.send(Request.DOSAGE_ON);
+                        lowLevelClient.send(Command.ARM_STOP);
+                        lowLevelClient.send(Command.BOWL_OUT);
+                        lowLevelClient.send(Command.TAP_ON);
+                        lowLevelClient.send(Command.DOSAGE_ON);
                         TimeUnit.SECONDS.sleep(12);
-                        lowLevelClient.send(Request.DOSAGE_OFF);
+                        lowLevelClient.send(Command.DOSAGE_OFF);
                         TimeUnit.MINUTES.sleep(3);
-                        lowLevelClient.send(Request.TAP_OFF);
-                        lowLevelClient.send(Request.DRAIN_ON);
+                        lowLevelClient.send(Command.TAP_OFF);
+                        lowLevelClient.send(Command.DRAIN_ON);
                         TimeUnit.MINUTES.sleep(2);
-                        lowLevelClient.send(Request.DRAIN_OFF);
-                        lowLevelClient.send(Request.TAP_ON);
+                        lowLevelClient.send(Command.DRAIN_OFF);
+                        lowLevelClient.send(Command.TAP_ON);
                         TimeUnit.MINUTES.sleep(2);
-                        lowLevelClient.send(Request.TAP_OFF);
-                        lowLevelClient.send(Request.DRAIN_ON);
+                        lowLevelClient.send(Command.TAP_OFF);
+                        lowLevelClient.send(Command.DRAIN_ON);
                         TimeUnit.MINUTES.sleep(2);
-                        lowLevelClient.send(Request.DRAIN_OFF);
+                        lowLevelClient.send(Command.DRAIN_OFF);
                         TimeUnit.SECONDS.sleep(15);
-                        lowLevelClient.send(Request.DRAIN_ON);
+                        lowLevelClient.send(Command.DRAIN_ON);
                         TimeUnit.SECONDS.sleep(45);
-                        lowLevelClient.send(Request.DRAIN_OFF);
-                        lowLevelClient.send(Request.DRYER_ON);
+                        lowLevelClient.send(Command.DRAIN_OFF);
+                        lowLevelClient.send(Command.DRYER_ON);
                         TimeUnit.MINUTES.sleep(24);
-                        lowLevelClient.send(Request.DRYER_OFF);
-                        lowLevelClient.send(Request.ARM_UP);
+                        lowLevelClient.send(Command.DRYER_OFF);
+                        lowLevelClient.send(Command.ARM_UP);
                         TimeUnit.SECONDS.sleep(18);
-                        lowLevelClient.send(Request.ARM_STOP);
-                        lowLevelClient.send(Request.BOWL_STOP);
+                        lowLevelClient.send(Command.ARM_STOP);
+                        lowLevelClient.send(Command.BOWL_STOP);
                     } catch (IOException | InterruptedException e) {
                         e.printStackTrace();
                     }

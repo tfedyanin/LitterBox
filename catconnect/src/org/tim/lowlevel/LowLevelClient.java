@@ -4,7 +4,6 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.Socket;
-import java.util.concurrent.TimeoutException;
 
 /**
  * User: Marianna
@@ -35,8 +34,8 @@ public class LowLevelClient {
         thread.start();
     }
 
-    public void send(Request request) throws IOException, InterruptedException {
-        send(request.getCommand());
+    public void send(Command command) throws IOException, InterruptedException {
+        send(command.getCommand());
     }
 
     void send(String command) throws IOException, InterruptedException {

@@ -5,7 +5,7 @@ package org.tim.lowlevel;
  * 07.04.2015
  * 22:09
  */
-public enum Request {
+public enum Command {
     BOWL_STATUS("bowl"),
     BOWL_OUT("bowl cw"),
     BOWL_IN("bowl ccw"),
@@ -33,7 +33,7 @@ public enum Request {
     private final String command;
 
 
-    Request(String command) {
+    Command(String command) {
         this.command = command;
     }
 
