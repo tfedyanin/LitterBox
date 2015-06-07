@@ -1,6 +1,6 @@
-package org.tim.hightlevel;
+package org.tim.highlevel;
 
-import org.tim.hightlevel.comands.CommandTask;
+import org.tim.highlevel.comands.CommandTask;
 import org.tim.lowlevel.Command;
 import org.tim.lowlevel.LowLevelClient;
 
@@ -11,7 +11,7 @@ import java.util.concurrent.*;
  * User: Tim
  * 01.06.2015 20:59
  */
-public class HightLevelClient {
+public class HighLevelClient {
     static final private int DEFAULT_TIMEOUT = 1000;
 
 
@@ -20,11 +20,11 @@ public class HightLevelClient {
     private int timeout = DEFAULT_TIMEOUT;
 
 
-    public HightLevelClient(ExecutorService executorService, LowLevelClient lowLevelClient) {
+    public HighLevelClient(ExecutorService executorService, LowLevelClient lowLevelClient) {
         this(executorService, lowLevelClient, DEFAULT_TIMEOUT);
     }
 
-    public HightLevelClient(ExecutorService executorService, LowLevelClient lowLevelClient, int timeout) {
+    public HighLevelClient(ExecutorService executorService, LowLevelClient lowLevelClient, int timeout) {
         this.executorService = executorService;
         this.lowLevelClient = lowLevelClient;
         this.timeout = timeout;

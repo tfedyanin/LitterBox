@@ -1,6 +1,5 @@
-package org.tim.hightlevel.comands;
+package org.tim.highlevel.comands;
 
-import org.tim.exceptions.EchoException;
 import org.tim.lowlevel.Command;
 import org.tim.lowlevel.LowLevelClient;
 

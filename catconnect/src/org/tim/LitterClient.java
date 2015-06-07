@@ -24,9 +24,11 @@ public class LitterClient extends Application {
 
     public static void main(String[] args) {
         try {
-            lowLevelClient = new LowLevelClient(InetAddress.getByAddress(
-                    new byte[]{(byte) 192, (byte) 168, 1, (byte) 177}),
-                    80);
+            InetAddress address = InetAddress.getByAddress(
+                    new byte[]{(byte) 192, (byte) 168, 1, (byte) 177});
+            int port = 80;
+            lowLevelClient = new LowLevelClient(address,
+                    port);
         } catch (IOException e1) {
             e1.printStackTrace();
         }
