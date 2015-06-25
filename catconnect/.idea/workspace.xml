@@ -7,10 +7,6 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="215fa96a-7c1f-4223-8994-9ad5fbc870eb" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/org/tim/highlevel/HighLevelClient.java" afterPath="$PROJECT_DIR$/src/org/tim/highlevel/HighLevelClient.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/org/tim/gui/Main.java" afterPath="$PROJECT_DIR$/src/org/tim/gui/Main.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/org/tim/gui/MainController.java" afterPath="$PROJECT_DIR$/src/org/tim/gui/MainController.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/org/tim/gui/view.fxml" afterPath="$PROJECT_DIR$/src/org/tim/gui/view.fxml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="catconnect.iws" />
@@ -826,7 +822,7 @@
       <workItem from="1435080627620" duration="1921000" />
       <workItem from="1435125418679" duration="4152000" />
       <workItem from="1435209412487" duration="260000" />
-      <workItem from="1435209800134" duration="1488000" />
+      <workItem from="1435209800134" duration="1530000" />
     </task>
     <task id="LOCAL-00001" summary="clean up code">
       <created>1433272823078</created>
@@ -846,11 +842,17 @@
       <option name="project" value="LOCAL" />
       <updated>1433705624076</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="Мелкие правки">
+      <created>1435215363232</created>
+      <option name="number" value="00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1435215363232</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="127641000" />
+    <option name="totallyTimeSpent" value="127683000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -907,7 +909,8 @@
     <MESSAGE value="clean up code" />
     <MESSAGE value="transfer to laptop" />
     <MESSAGE value="new GUI&#10;High level (on futures)" />
-    <option name="LAST_COMMIT_MESSAGE" value="new GUI&#10;High level (on futures)" />
+    <MESSAGE value="Мелкие правки" />
+    <option name="LAST_COMMIT_MESSAGE" value="Мелкие правки" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
