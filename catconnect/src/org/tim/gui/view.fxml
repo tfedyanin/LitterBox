@@ -36,24 +36,48 @@
 
     <TitledPane
             text="Лопатка">
-        <HBox>
-            <Button
-                    text="Статус"
-                    onAction="#armStatus"
-                    />
-            <Button
-                    text="Вверх"
-                    onAction="#armUp"
-                    />
-            <Button
-                    text="Вниз"
-                    onAction="#armDown"
-                    />
-            <Button
-                    text="Стоп"
-                    onAction="#armStop"
-                    />
-        </HBox>
+        <VBox>
+            <HBox>
+                <Button
+                        text="Статус"
+                        onAction="#armStatus"
+                        />
+                <Button
+                        text="Вверх"
+                        onAction="#armUp"
+                        />
+                <Button
+                        text="Вниз"
+                        onAction="#armDown"
+                        />
+                <Button
+                        text="Стоп"
+                        onAction="#armStop"
+                        />
+                <Button
+                        text="Полностью вниз"
+                        onAction="#armDownFull"
+                        />
+            </HBox>
+            <HBox>
+                <Button
+                        text="Вверx с тряской"
+                        onAction="#armUpAndShake"
+                        />
+                <Button
+                        text="Полностью вверх"
+                        onAction="#armUpFull"
+                        />
+                <Button
+                        text="Приподнять"
+                        onAction="#armUpLittleBit"
+                        />
+                <Button
+                        text="Приопустить"
+                        onAction="#armDownLittleBit"
+                        />
+            </HBox>
+        </VBox>
     </TitledPane>
     <TitledPane
             text="Шампунь">
@@ -120,6 +144,10 @@
             <Button
                     text="Стоп"
                     onAction="#dryerOff"
+                    />
+            <Button
+                    text="35 мин."
+                    onAction="#dryer35m"
                     />
         </HBox>
     </TitledPane>

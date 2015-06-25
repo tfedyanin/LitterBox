@@ -34,6 +34,8 @@ public class HighLevelClient {
         CommandTask task = new CommandTask(command, lowLevelClient);
         Future<Objects> future = executorService.submit(task);
         try {
+            //todo ой туду туду, очень сильное туду
+            TimeUnit.MILLISECONDS.sleep(200);
             future.get(timeout, TimeUnit.MILLISECONDS);
             return true;
         } catch (InterruptedException | ExecutionException | TimeoutException e) {

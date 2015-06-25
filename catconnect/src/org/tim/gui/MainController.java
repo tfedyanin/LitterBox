@@ -148,6 +148,17 @@ public class MainController implements Initializable{
     }
 
     @FXML
+    public void dryer35m() {
+        client.execute(DRYER_ON);
+        timeoutMin(35);
+        shutdownAll();
+        timeoutSec(3);
+        armUpFull();
+        timeoutSec(3);
+        shutdownAll();
+    }
+
+    @FXML
     public void tapOn() {
         client.execute(TAP_ON);
     }
@@ -194,39 +205,45 @@ public class MainController implements Initializable{
 
     @FXML
     public void program() {
-        bowlOut();
-        armDownFull();
-        bowlIn();
-        timeoutSec(30);
-        armUpAndShake();
-        armDownFull();
-        timeoutSec(30);
-        armUpAndShake();
-        armDownFull();
-        bowlOut();
-        tapOn();
-        dosageOn();
-        timeoutSec(15);
-        dosageOff();
-        timeoutMin(2);
-        tapOff();
-        drainOn();
-        timeoutMin(2);
-        timeoutSec(30);
-        drainOff();
-        tapOn();
-        timeoutMin(2);
-        drainOn();
-        timeoutMin(4);
-        drainOff();
-        dryerOn();
-        timeoutSec(15);
-        drainOn();
-        timeoutSec(45);
-        drainOff();
-        timeoutMin(20);
-        armUpFull();
-        shutdownAll();
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                bowlOut();
+                armDownFull();
+                timeoutSec(1);
+                bowlIn();
+                timeoutSec(30);
+//                armUpAndShake();
+                armUpFull();
+                armDownFull();
+                timeoutSec(30);
+                armUpAndShake();
+                armDownFull();
+                timeoutSec(1);
+                bowlOut();
+                timeoutSec(1);
+                dosageOn();
+                timeoutSec(30);
+                tapOn();
+                timeoutSec(30);
+                dosageOff();
+                timeoutSec(30);
+                tapOff();
+                drainOn();
+                timeoutMin(4);
+                drainOff();
+                dryerOn();
+                timeoutSec(15);
+                drainOn();
+                timeoutSec(45);
+                drainOff();
+                timeoutMin(45);
+                armUpFull();
+                shutdownAll();
+            }
+        });
+        thread.start();
+
 
     }
 

@@ -46,7 +46,7 @@ public class Main extends Application{
 
         Parent root = loader.load();
         primaryStage.setTitle("Кошачий туалет");
-        primaryStage.setScene(new Scene(root, 300, 600));
+        primaryStage.setScene(new Scene(root, 450, 600));
         primaryStage.show();
     }
 }
