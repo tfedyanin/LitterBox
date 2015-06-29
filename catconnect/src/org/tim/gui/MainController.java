@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.net.InetAddress;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
@@ -20,7 +21,8 @@ import static org.tim.lowlevel.Command.*;
  * 07.06.2015
  * 9:01
  */
-public class MainController implements Initializable{
+public class MainController implements Initializable {
+
 
     @FXML
     private TextArea console;
@@ -32,7 +34,7 @@ public class MainController implements Initializable{
 
     public MainController(InetAddress address, int port) {
         try {
-            client = new HighLevelClient(Executors.newCachedThreadPool(), new LowLevelClient(address, port));
+            client = new HighLevelClient(new LowLevelClient(address, port));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -65,7 +67,7 @@ public class MainController implements Initializable{
         client.execute(ARM_UP);
         timeoutSec(8);
         client.execute(ARM_DOWN);
-        timeoutSec(5);
+        timeoutSec(3);
         client.execute(ARM_UP);
         timeoutSec(14);
         client.execute(ARM_STOP);
@@ -210,35 +212,42 @@ public class MainController implements Initializable{
             public void run() {
                 bowlOut();
                 armDownFull();
-                timeoutSec(1);
+                timeoutSec(10);
                 bowlIn();
-                timeoutSec(30);
-//                armUpAndShake();
-                armUpFull();
-                armDownFull();
-                timeoutSec(30);
+                timeoutSec(45);
                 armUpAndShake();
+//                armUpFull();
                 armDownFull();
-                timeoutSec(1);
+                timeoutSec(45);
+                armUpAndShake();
+//                armUpFull();
                 bowlOut();
-                timeoutSec(1);
-                dosageOn();
-                timeoutSec(30);
                 tapOn();
-                timeoutSec(30);
-                dosageOff();
-                timeoutSec(30);
+                armDownFull();
+                timeoutMin(2);
                 tapOff();
                 drainOn();
-                timeoutMin(4);
+                timeoutSec(100);
                 drainOff();
-                dryerOn();
-                timeoutSec(15);
+                tapOn();
+                dosageOn();
+                timeoutSec(20);
+                dosageOff();
+                timeoutSec(40);
+                tapOff();
                 drainOn();
-                timeoutSec(45);
+                dryerOn();
+                timeoutMin(2);
+                timeoutSec(30);
                 drainOff();
-                timeoutMin(45);
+                timeoutSec(30);
+                drainOn();
+                timeoutSec(30);
+                drainOff();
+                timeoutMin(16);
                 armUpFull();
+                dryerOff();
+                bowlStop();
                 shutdownAll();
             }
         });
